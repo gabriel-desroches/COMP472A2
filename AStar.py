@@ -1,6 +1,7 @@
 import time
 
 
+# determine heuristic to use
 def setup_heuristic(heuristic):
     if heuristic == 'M':
         return Heuristic('Manhattan')
@@ -12,6 +13,7 @@ def setup_heuristic(heuristic):
         return 'error'
 
 
+# method to help determine possible moves
 def element_swap(state, i, j, newI, newJ):
     # Tuples are immutable so create a list and then convert
     newList = [list(y) for y in state]
@@ -20,6 +22,7 @@ def element_swap(state, i, j, newI, newJ):
     return tuple(tuple(x) for x in newList)
 
 
+# verify if heuristic and puzzle size are okay
 def valid_input(puzzle, heuristic) -> bool:
     if heuristic != 'M' and heuristic != 'SPI':
         print('The heuristic proposed is not supported. A* search is aborted.')
@@ -53,10 +56,12 @@ class AStar:
         self.startTime = time.time()
         self.run()
 
+    # called after creating the a* search object to run the search
     def run(self):
         print('\nStarting AStar search for ' + str(self.size) + 'X' + str(self.size) + ' puzzle using heuristic: ' +
               self.heuristic.name + '\n')
         print(self.initialState.puzzleState)
+        # keep searching trough the states until goal state is found or time exceeded
         while True:
             if self.endState == self.currentState.puzzleState:
                 print("Successfully reached goal state!")
@@ -67,6 +72,7 @@ class AStar:
                 break
             self.execute_move()
 
+    # this method executes a move (pops it from the priority list) and considers further possible moves
     def execute_move(self):
         self.openList.sort(key=lambda state: state.cost, reverse=True)
         self.currentState = self.openList.pop()
@@ -77,6 +83,7 @@ class AStar:
         for possible_move in possible_moves:
             possible_move = State(possible_move, self.heuristic, self.currentState)
             move_not_considered = False
+            # check if the state is already in the closed list with a smaller cost
             for closedListState in self.closedList:
                 if possible_move.puzzleState == closedListState.puzzleState:
                     if possible_move.cost > closedListState.cost:
@@ -84,14 +91,17 @@ class AStar:
                         break
             if move_not_considered:
                 continue
+            # check if the state is already in the open list with a smaller cost
             for openListState in self.openList:
                 if possible_move.puzzleState == openListState.puzzleState and possible_move.cost > openListState.cost:
                     move_not_considered = True
                     break
             if move_not_considered:
                 continue
+            # append possible move to open list if it has not already been encountered with a smaller cost
             self.openList.append(possible_move)
 
+    # display statistics after search is completed
     def post_search_info(self):
         print("--- %s seconds ---" % (time.time() - self.startTime) + '\n')
         self.solutionFile.write(self.currentState.get_solution_path())
@@ -99,6 +109,7 @@ class AStar:
         print('Length of solution path: ' + str(self.currentState.depth))
         print('Cost of the solution: ' + str(self.currentState.cost))
 
+    # generate possible moves from a current state
     def generate_children(self, state):
         moves = []
         for i in range(self.size):
@@ -156,7 +167,6 @@ def hamming(state) -> int:
     return cost
 
 
-# not real sum of permutation, this is hamming
 def sum_of_permutation_inversion(state) -> int:
     size = len(state)
     cost = 0
