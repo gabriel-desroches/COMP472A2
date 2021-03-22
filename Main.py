@@ -7,5 +7,5 @@ print("| 1 2 3 |\n"
 
 puzzle = ((3, 2, 1), (4, 9, 7), (6, 8, 5))
 
-# a* heuristic: enter M for Manhattan or SPI for Sum of Permutation Inversion
-astarSearch = AStar(puzzle, 'M')
+# a* heuristic: enter M for Manhattan, SPI for Sum of Permutation Inversion, or H for Hamming
+astarSearch = AStar(puzzle, 'SPI')
