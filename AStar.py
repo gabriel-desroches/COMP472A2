@@ -1,10 +1,11 @@
 import time
 
+
 def setup_heuristic(heuristic):
     if heuristic == 'M':
         return Heuristic('Manhattan')
     elif heuristic == 'SPI':
-        return Heuristic('SumOfPermutationInversion')
+        return Heuristic('Sum of Permutation Inversion')
     else:
         return 'error'
 
@@ -17,30 +18,40 @@ def element_swap(state, i, j, newI, newJ):
     return tuple(tuple(x) for x in newList)
 
 
+def valid_input(puzzle, heuristic) -> bool:
+    if heuristic != 'M' and heuristic != 'SPI':
+        print('The heuristic proposed is not supported. A* search is aborted.')
+        return False
+    for row in puzzle:
+        if len(puzzle) != len(row):
+            print('The puzzle proposed is not NxN. A* search is aborted.')
+            return False
+    else:
+        return True
+
+
 class AStar:
 
     def __init__(self, puzzle, heuristic):
+        if not valid_input(puzzle, heuristic):
+            return
         self.heuristic = setup_heuristic(heuristic)
-        # make local
-        self.currentState = State(puzzle, self.heuristic.calculate_cost(puzzle))
         self.size = len(puzzle)
-        self.initialState = State(puzzle, self.heuristic.calculate_cost(puzzle))
+        self.initialState = State(puzzle, self.heuristic, None)
+        self.currentState = self.initialState
         self.endState = ((1, 2, 3), (4, 5, 6), (7, 8, 9))
         self.searchFile = open("AStar Search Path.txt", 'w')
         self.solutionFile = open("AStar Solution Path.txt", 'w')
-        # self.path = set()
-        # self.visited = set()
         self.openList = []
-        self.openList.append(self.currentState)
+        self.openList.append(self.initialState)
         self.closedList = set()
         self.startTime = time.time()
         self.run()
 
     def run(self):
-        if not self.valid_input():
-            return
-        print('\nStarting AStar search for ' + str(self.size) + 'X' + str(self.size) + ' puzzle using heuristic:' +
-              self.heuristic.__name__ + '\n')
+        print('\nStarting AStar search for ' + str(self.size) + 'X' + str(self.size) + ' puzzle using heuristic: ' +
+              self.heuristic.name + '\n')
+        print(self.initialState.puzzleState)
         while True:
             if self.endState == self.currentState.puzzleState:
                 print("Successfully reached goal state!")
@@ -51,40 +62,28 @@ class AStar:
                 break
             self.execute_move()
 
-    # perhaps make current node local
     def execute_move(self):
         self.openList.sort(key=lambda state: state.cost, reverse=True)
         self.currentState = self.openList.pop()
         self.closedList.add(self.currentState)
         possible_moves = self.generate_children(self.currentState.puzzleState)
         for possible_move in possible_moves:
-            possible_move = State(possible_move, self.heuristic.calculate_cost(possible_move))
+            possible_move = State(possible_move, self.heuristic, self.currentState)
             move_not_considered = False
             for closedListState in self.closedList:
-                if possible_move.puzzleState == closedListState and possible_move.cost > closedListState.cost:
-                    move_not_considered = True
-                    break
+                if possible_move.puzzleState == closedListState.puzzleState:
+                    if possible_move.cost > closedListState.cost:
+                        move_not_considered = True
+                        break
             if move_not_considered:
                 continue
             for openListState in self.openList:
-                if possible_move.puzzleState == openListState and possible_move.cost > openListState.cost:
+                if possible_move.puzzleState == openListState.puzzleState and possible_move.cost > openListState.cost:
                     move_not_considered = True
                     break
             if move_not_considered:
                 continue
             self.openList.append(possible_move)
-
-    def valid_input(self) -> bool:
-        #maybe change this
-        if 'name' not in self.heuristic.__dict__:
-            print('The heuristic proposed is not supported. A* search is aborted.')
-            return False
-        for row in self.initialState.puzzleState:
-            if self.size != len(row):
-                print('The puzzle proposed is not NxN. A* search is aborted.')
-                return False
-        else:
-            return True
 
     def post_search_info(self):
         print("--- %s seconds ---" % (time.time() - self.startTime))
@@ -101,44 +100,56 @@ class AStar:
 
         return moves
 
-    # helper function to swap perform a swap
-
 
 class State:
-    def __init__(self, puzzle_state, cost):
+    def __init__(self, puzzle_state, heuristic, state):
         self.puzzleState = puzzle_state
-        self.cost = cost
+        self.parent = state
+        if state is not None:
+            self.depth = state.depth + 1
+        else:
+            self.depth = 0
+        self.cost = heuristic.calculate_cost(puzzle_state, self.depth)
+
+
+def manhattan_distance(state) -> int:
+    size = len(state)
+    cost = 0
+    x_position = 0
+    for row in state:
+        y_position = 0
+        for number in row:
+            goal_row = (number - 1) // size
+            goal_column = (number - 1) % size
+            horizontal_distance = abs(x_position - goal_row)
+            vertical_distance = abs(y_position - goal_column)
+            cost += vertical_distance + horizontal_distance
+            y_position = y_position + 1
+        x_position = x_position + 1
+    return cost
+
+
+# not real sum of permutation, this is hamming
+def sum_of_permutation_inversion(state) -> int:
+    cost = 0
+    expected_value = 1
+    for row in state:
+        for number in row:
+            if number != expected_value:
+                cost = cost + 1
+            expected_value = expected_value + 1
+    return cost
 
 
 class Heuristic:
     def __init__(self, name):
         self.name = name
 
-    def calculate_cost(self, move) -> int:
-        if self.name== 'Manhattan':
-            #call cost method
-            return 0
+    def calculate_cost(self, state, depth) -> int:
+        if self.name == 'Manhattan':
+            return manhattan_distance(state) + depth
         if self.name == 'Sum of Permutation Inversion':
-            # call cost method
-            return 0
-        else
+            return sum_of_permutation_inversion(state) + depth
+        else:
             print('Error calculating cost')
             return 0
-
-
-# class Manhattan(Heuristic):
-#     def __init__(self):
-#         self.name = 'Manhattan'
-#
-#     def calculate_cost(self, move) -> int:
-#         # return cost
-#         pass
-#
-#
-# class SumOfPermutationInversion(Heuristic):
-#     def __init__(self):
-#         self.name = 'Sum of Permutation Inversion'
-#
-#     def calculate_cost(self, move) -> int:
-#         # return cost
-#         pass
