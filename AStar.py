@@ -24,7 +24,7 @@ def element_swap(state, i, j, newI, newJ):
 
 # verify if heuristic and puzzle size are okay
 def valid_input(puzzle, heuristic) -> bool:
-    if heuristic != 'M' and heuristic != 'SPI':
+    if heuristic != 'M' and heuristic != 'SPI' and heuristic != 'H':
         print('The heuristic proposed is not supported. A* search is aborted.')
         return False
     for row in puzzle:
@@ -44,7 +44,7 @@ class AStar:
         self.size = len(puzzle)
         self.initialState = State(puzzle, self.heuristic, None)
         self.currentState = self.initialState
-        self.endState = ((1, 2, 3), (4, 5, 6), (7, 8, 9))
+        self.endState = ((1, 2, 3), (4, 5, 6), (7, 8, 9))  # TODO: generate this according to size
         self.searchPathLength = 0
         self.searchFile = open("AStar Search Path.txt", 'w')
         self.searchFile.write('Here is the a* search path:\n\n')
