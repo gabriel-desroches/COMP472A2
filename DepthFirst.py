@@ -62,6 +62,4 @@ def elem_swap(state, i, j, newI, newJ):
 
     return tuple(tuple(x) for x in newList)
 
-if __name__ == "__main__":
-    puzzle = ((9, 2, 8), (4, 1, 6), (3, 5, 7))
-    depthSearch(puzzle)
+depthSearch(((4,8,6),(2,1,5),(3,7,9)))

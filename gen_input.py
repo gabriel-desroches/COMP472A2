@@ -7,12 +7,15 @@ def gen_input(args):
     n = args.row * args.col
     with open('input.txt', 'w',  encoding='utf-8') as f:
         f.write(f'# {args.row} {args.col}\n')
-        for _ in range(20):
+        for _ in range(args.n):
             puzzle = random.sample(range(1, n + 1), n)
+            # denote new row with a comma
+            pos = args.row 
+            for _ in range(args.col - 1):
+                puzzle.insert(pos,',')
+                pos = pos + args.row + 1
             p_str = ' '.join(map(str, puzzle))
             f.write(f'{p_str}\n')
-
-# gen_input()
 
 if __name__ == "__main__":
     '''
@@ -27,6 +30,6 @@ if __name__ == "__main__":
     parser.add_argument('col', metavar='COL', type=int, nargs='?', default=3,
                         help='Number of columns (default: 3)')
     args = parser.parse_args()
-    assert(args.row > 0)
-    assert(args.col > 0)
+    assert args.row > 0
+    assert args.col > 0
     gen_input(args)
