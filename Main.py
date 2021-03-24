@@ -47,8 +47,6 @@ def main(args):
     else:
         for puzzle in puzzle_list:
             AStar(puzzle, args.a, end_state)
-            return
-
 
 if __name__ == "__main__":
     '''
