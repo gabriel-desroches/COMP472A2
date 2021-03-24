@@ -37,8 +37,8 @@ class AStar:
         if not valid_input(heuristic):
             return
         self.heuristic = setup_heuristic(heuristic)
-        self.rowSize = len(puzzle)
-        self.columnSize = len(puzzle[0])
+        self.columnSize = len(puzzle)
+        self.rowSize = len(puzzle[0])
         self.initialState = State(puzzle, self.heuristic, None)
         self.currentState = self.initialState
         self.endState = end_state
@@ -110,11 +110,11 @@ class AStar:
     # generate possible moves from a current state
     def generate_children(self, state):
         moves = []
-        for i in range(self.rowSize):
-            for j in range(self.columnSize):
-                if i < self.rowSize - 1:
+        for i in range(self.columnSize):
+            for j in range(self.rowSize):
+                if i < self.columnSize - 1:
                     moves.append(element_swap(state, i, j, i + 1, j))  # vertical
-                if j < self.columnSize - 1:
+                if j < self.rowSize - 1:
                     moves.append(element_swap(state, i, j, i, j + 1))  # horizontal
 
         return moves
