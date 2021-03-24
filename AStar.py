@@ -1,5 +1,6 @@
 import time
 
+
 # determine heuristic to use
 def setup_heuristic(heuristic):
     if heuristic == 'M':
@@ -21,29 +22,26 @@ def element_swap(state, i, j, newI, newJ):
     return tuple(tuple(x) for x in newList)
 
 
-# verify if heuristic and puzzle size are okay
-def valid_input(puzzle, heuristic) -> bool:
+# verify if heuristic is okay
+def valid_input(heuristic) -> bool:
     if heuristic != 'M' and heuristic != 'SPI' and heuristic != 'H':
         print('The heuristic proposed is not supported. A* search is aborted.')
         return False
-    for row in puzzle:
-        if len(puzzle) != len(row):
-            print('The puzzle proposed is not NxN. A* search is aborted.')
-            return False
     else:
         return True
 
 
 class AStar:
 
-    def __init__(self, puzzle, heuristic):
-        if not valid_input(puzzle, heuristic):
+    def __init__(self, puzzle, heuristic, end_state):
+        if not valid_input(heuristic):
             return
         self.heuristic = setup_heuristic(heuristic)
-        self.size = len(puzzle) # TODO: optional, store row/col values
+        self.rowSize = len(puzzle)
+        self.columnSize = len(puzzle[0])
         self.initialState = State(puzzle, self.heuristic, None)
         self.currentState = self.initialState
-        self.endState = ((1, 2, 3), (4, 5, 6), (7, 8, 9))  # TODO: use end_state provided in main
+        self.endState = end_state
         self.searchPathLength = 0
         self.searchFile = open("AStar Search Path.txt", 'w')
         self.searchFile.write('Here is the a* search path:\n\n')
@@ -57,7 +55,8 @@ class AStar:
 
     # called after creating the a* search object to run the search
     def run(self):
-        print('\nStarting AStar search for ' + str(self.size) + 'X' + str(self.size) + ' puzzle using heuristic: ' +
+        print('\nStarting AStar search for ' + str(self.rowSize) + 'X' + str(self.columnSize) + 'puzzle using '
+                                                                                                'heuristic: ' +
               self.heuristic.name + '\n')
         print(self.initialState.puzzleState)
         # keep searching trough the states until goal state is found or time exceeded
@@ -111,11 +110,11 @@ class AStar:
     # generate possible moves from a current state
     def generate_children(self, state):
         moves = []
-        for i in range(self.size):
-            for j in range(self.size):
-                if i < self.size - 1:
+        for i in range(self.rowSize):
+            for j in range(self.columnSize):
+                if i < self.rowSize - 1:
                     moves.append(element_swap(state, i, j, i + 1, j))  # vertical
-                if j < self.size - 1:
+                if j < self.columnSize - 1:
                     moves.append(element_swap(state, i, j, i, j + 1))  # horizontal
 
         return moves
@@ -139,14 +138,15 @@ class State:
 
 
 def manhattan_distance(state) -> int:
-    size = len(state)
+    row_size = len(state)
+    column_size = len(state[0])
     cost = 0
     x_position = 0
     for row in state:
         y_position = 0
         for number in row:
-            goal_row = (number - 1) // size
-            goal_column = (number - 1) % size
+            goal_row = (number - 1) // row_size
+            goal_column = (number - 1) % column_size
             horizontal_distance = abs(x_position - goal_row)
             vertical_distance = abs(y_position - goal_column)
             cost += vertical_distance + horizontal_distance
@@ -167,7 +167,8 @@ def hamming(state) -> int:
 
 
 def sum_of_permutation_inversion(state) -> int:
-    size = len(state)
+    row_size = len(state)
+    column_size = len(state[0])
     cost = 0
     x_position = 0
     for row in state:
@@ -175,8 +176,8 @@ def sum_of_permutation_inversion(state) -> int:
         for number in row:
             x_on_right = x_position
             y_on_right = y_position + 1
-            while x_on_right < size:
-                while y_on_right < size:
+            while x_on_right < row_size:
+                while y_on_right < column_size:
                     if state[x_on_right][y_on_right] < number:
                         cost = cost + 1
                     y_on_right = y_on_right + 1
