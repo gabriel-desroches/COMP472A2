@@ -1,12 +1,10 @@
 import time
 
-endState = ((1, 2, 3), (4, 5, 6), (7, 8, 9))
-N_SIZE = len(endState)
 searchFile = open("DFS Search Path.txt", 'w')
 solutionFile = open("DFS Solution Path.txt", 'w')
 
 # Non recursive depthFirstSearch because otherwise recursion depth limit is exceeded
-def depthSearch(state):
+def depthSearch(state, end_state):
     path = set()
     visited = set()
     stack = [state]
@@ -26,14 +24,15 @@ def depthSearch(state):
             visited.add(node)
             path.add(node)
 
-        if node == endState:
+        if node == end_state:
             print("Found!")
             print(f"{count}: stack({len(stack)}), visited({len(visited)})")
             print("--- %s seconds ---" % (time.time() - start_time))
             return path
 
         # Generate children of current puzzle state
-        children = generateChildren(node)
+        # TODO change so that it doesnt need to put dimension as params
+        children = generateChildren(node, len(end_state), len(end_state[0]))
 
         for child in children:
             if child not in visited:
@@ -43,23 +42,21 @@ def depthSearch(state):
     return path
 
 # Helper function to generate children
-def generateChildren(state):
+def generateChildren(state, N_COL, N_ROW):
     moves = []
-    for i in range(N_SIZE):
-        for j in range (N_SIZE):
-            if i < N_SIZE - 1:
-                moves.append(elem_swap(state, i, j, i + 1, j)) # vertical
-            if j < N_SIZE - 1:
-                moves.append(elem_swap(state, i, j, i, j + 1)) # horizontal
+    for i in range(N_COL):
+        for j in range (N_ROW):
+            if i < N_COL - 1:
+                moves.append(element_swap(state, i, j, i + 1, j)) # vertical
+            if j < N_ROW - 1:
+                moves.append(element_swap(state, i, j, i, j + 1)) # horizontal
 
     return moves
 
 # helper function to swap perform a swap
-def elem_swap(state, i, j, newI, newJ):
+def element_swap(state, i, j, newI, newJ):
     # Tuples are immutable so create a list and then convert
     newList = [list(y) for y in state]
     newList[i][j], newList[newI][newJ] = newList[newI][newJ], newList[i][j]
 
     return tuple(tuple(x) for x in newList)
-
-depthSearch(((4,8,6),(2,1,5),(3,7,9)))

@@ -1,6 +1,6 @@
-# from DepthFirst import *
-# from IterativeDeepening import *
-# from AStar import *
+from DepthFirst import *
+from IterativeDeepening import *
+from AStar import *
 import argparse
 
 def main(args):
@@ -21,27 +21,32 @@ def main(args):
             puzzle = tuple(tuple(map(int,x.strip().split())) for x in line.strip().split(','))
             puzzle_list.append(puzzle)
     # print(*puzzle_list, sep = "\n")
-    # TODO 
-    # create algo class according to args.a
+    
+    # TODO -------------------------------------------- 
     # format solution path to display important info
     # compile analysis data for the input puzzles
+    #--------------------------------------------------
 
+    # Generate expected solution
+    end_list = list()
+    i = 1
+    for _ in range(col):
+        end_list.append(tuple(range(i, i + row)))
+        i = i + row
+    end_state = tuple(end_list)
+    # print(*end_state, sep = "\n")
+
+    # Compile analysis data for the input puzzles
     if args.a == 'DFS':
-        # for puzzle in puzzle_list:
-        #   depthSearch(puzzle)
-        pass
+        for puzzle in puzzle_list:
+          depthSearch(puzzle, end_state)
     elif args.a == 'IDS':
-        # for puzzle in puzzle_list:
-        #   depthSearch(puzzle)
-        pass
-    elif args.a == 'A1':
-        # for puzzle in puzzle_list:
-        #   depthSearch(puzzle)
-        pass
-    elif args.a == 'A2':
-        # for puzzle in puzzle_list:
-        #   AStar(puzzle, 'M')
-        pass
+        for puzzle in puzzle_list:
+          depthSearch(puzzle, end_state)
+    else:
+        for puzzle in puzzle_list:
+        #   astarSearch = AStar(puzzle, args.a)
+            return
 
 if __name__ == "__main__":
     '''
@@ -53,7 +58,7 @@ if __name__ == "__main__":
                         type=argparse.FileType('r'),
                         help='filename of the puzzles')
     parser.add_argument('-a', metavar='ALGORITHM', required=True,
-                        choices=['DFS', 'IDS', 'A1', 'A2'],
-                        help='search algorithms (DFS, IDS, A1, A2)')
+                        choices=['DFS', 'IDS', 'M', 'SPI', 'H'],
+                        help='search algorithms (DFS, IDS, M, SPI, H)')
     args = parser.parse_args()
     main(args)
