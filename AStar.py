@@ -37,8 +37,8 @@ class AStar:
         if not valid_input(heuristic):
             return
         self.heuristic = setup_heuristic(heuristic)
-        self.columnSize = len(puzzle)
-        self.rowSize = len(puzzle[0])
+        self.numberOfRows = len(puzzle)
+        self.numberOfColumns = len(puzzle[0])
         self.initialState = State(puzzle, self.heuristic, None)
         self.currentState = self.initialState
         self.endState = end_state
@@ -51,11 +51,10 @@ class AStar:
         self.openList.append(self.initialState)
         self.closedList = set()
         self.startTime = time.time()
-        self.run()
 
     # called after creating the a* search object to run the search
     def run(self):
-        print('\nStarting AStar search for ' + str(self.rowSize) + 'X' + str(self.columnSize) + 'puzzle using '
+        print('\nStarting AStar search for ' + str(self.numberOfRows) + 'X' + str(self.numberOfColumns) + 'puzzle using '
                                                                                                 'heuristic: ' +
               self.heuristic.name + '\n')
         print(self.initialState.puzzleState)
@@ -101,20 +100,22 @@ class AStar:
 
     # display statistics after search is completed
     def post_search_info(self):
-        print("--- %s seconds ---" % (time.time() - self.startTime) + '\n')
+        execution_time = (time.time() - self.startTime)
+        print("--- %s seconds ---" % execution_time + '\n')
         self.solutionFile.write(self.currentState.get_solution_path())
         print('Length of search path: ' + str(self.searchPathLength))
         print('Length of solution path: ' + str(self.currentState.depth))
         print('Cost of the solution: ' + str(self.currentState.cost))
+        return execution_time, self.searchPathLength, self.currentState.depth, self.currentState.cost
 
     # generate possible moves from a current state
     def generate_children(self, state):
         moves = []
-        for i in range(self.columnSize):
-            for j in range(self.rowSize):
-                if i < self.columnSize - 1:
+        for i in range(self.numberOfRows):
+            for j in range(self.numberOfColumns):
+                if i < self.numberOfRows - 1:
                     moves.append(element_swap(state, i, j, i + 1, j))  # vertical
-                if j < self.rowSize - 1:
+                if j < self.numberOfColumns - 1:
                     moves.append(element_swap(state, i, j, i, j + 1))  # horizontal
 
         return moves
