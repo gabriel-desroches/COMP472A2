@@ -65,7 +65,7 @@ class AStar:
                 return self.post_search_info()
             if time.time() - self.startTime > 60:
                 print("Exceeded 60 seconds. Solution not found!")
-                return "error",
+                return "error"
             self.execute_move()
 
     # this method executes a move (pops it from the priority list) and considers further possible moves
