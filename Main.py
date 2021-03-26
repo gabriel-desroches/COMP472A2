@@ -8,5 +8,5 @@ print("| 1 2 3 |\n"
       "| 7 8 9 |")
 
 # temp hardcoded puzzle just to test things out
-puzzle = ((9, 2, 8), (4, 1, 6), (7, 5, 3))
+puzzle = ((4, 8, 6), (2, 1, 5), (3, 7, 9))
 depthSearch(puzzle)
