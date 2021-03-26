@@ -62,11 +62,10 @@ class AStar:
         while True:
             if self.endState == self.currentState.puzzleState:
                 print("Successfully reached goal state!")
-                self.post_search_info()
-                break
+                return self.post_search_info()
             if time.time() - self.startTime > 60:
                 print("Exceeded 60 seconds. Solution not found!")
-                break
+                return "error",
             self.execute_move()
 
     # this method executes a move (pops it from the priority list) and considers further possible moves
@@ -106,7 +105,7 @@ class AStar:
         print('Length of search path: ' + str(self.searchPathLength))
         print('Length of solution path: ' + str(self.currentState.depth))
         print('Cost of the solution: ' + str(self.currentState.cost))
-        return execution_time, self.searchPathLength, self.currentState.depth, self.currentState.cost
+        return self.currentState.depth, self.searchPathLength, self.currentState.cost, execution_time, 0
 
     # generate possible moves from a current state
     def generate_children(self, state):
