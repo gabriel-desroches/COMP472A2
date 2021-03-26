@@ -1,0 +1,6 @@
+Average & total length of the solution paths: 2.95, 59.0
+Average & total length of the search paths: 3.2, 64.0
+Average & total number of no solution: 0.0, 0.0
+Average & total cost: 2.95, 59.0
+Average & total execution time: 0.011845159530639648, 0.23690319061279297
+Optimality of the solution path: ??
