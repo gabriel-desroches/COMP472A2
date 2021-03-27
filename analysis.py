@@ -23,10 +23,6 @@ def main(args):
             puzzle_list.append(puzzle)
     # print(*puzzle_list, sep = "\n")
 
-    # TODO -------------------------------------------- 
-    # format solution path to display important info
-    # --------------------------------------------------
-
     # Generate expected solution
     end_list = list()
     i = 1
@@ -40,16 +36,16 @@ def main(args):
     with open('analysis.txt', 'w',  encoding='utf-8') as f:
         for a in ['DFS', 'IDS', 'M', 'SPI', 'H']:
             totals = np.zeros(5) # total length of the solution and search paths, cost, execution time, and number of no solution.
-            if args.a == 'DFS':
+            if a == 'DFS':
                 for puzzle in puzzle_list:
                     depthSearch(puzzle, end_state)
-            elif args.a == 'IDS':
+            elif a == 'IDS':
                 for puzzle in puzzle_list:
                     depthSearch(puzzle, end_state)
             else:
                 for puzzle in puzzle_list:
-                    a = AStar(puzzle, args.a, end_state)
-                    puzzle_info = a.run()
+                    a_star = AStar(puzzle, args.a, end_state)
+                    puzzle_info = a_star.run()
                     if (puzzle_info != "error"):
                         totals += puzzle_info
                     else: 
