@@ -54,9 +54,10 @@ class AStar:
 
     # called after creating the a* search object to run the search
     def run(self):
-        print('\nStarting AStar search for ' + str(self.numberOfRows) + 'X' + str(self.numberOfColumns) + 'puzzle using '
-                                                                                                'heuristic: ' +
-              self.heuristic.name + '\n')
+        print(
+            '\nStarting AStar search for ' + str(self.numberOfRows) + 'X' + str(self.numberOfColumns) + ' puzzle using '
+                                                                                                        'heuristic: ' +
+            self.heuristic.name + '\n')
         print(self.initialState.puzzleState)
         # keep searching trough the states until goal state is found or time exceeded
         while True:
@@ -78,23 +79,30 @@ class AStar:
         possible_moves = self.generate_children(self.currentState.puzzleState)
         for possible_move in possible_moves:
             possible_move = State(possible_move, self.heuristic, self.currentState)
-            move_not_considered = False
+            skip_to_next_move = False
             # check if the state is already in the closed list with a smaller cost
             for closedListState in self.closedList:
                 if possible_move.puzzleState == closedListState.puzzleState:
-                    if possible_move.cost > closedListState.cost:
-                        move_not_considered = True
+                    if possible_move.cost >= closedListState.cost:
+                        skip_to_next_move = True
                         break
-            if move_not_considered:
+            if skip_to_next_move:
                 continue
+            index_counter = 0
             # check if the state is already in the open list with a smaller cost
             for openListState in self.openList:
-                if possible_move.puzzleState == openListState.puzzleState and possible_move.cost > openListState.cost:
-                    move_not_considered = True
-                    break
-            if move_not_considered:
+                if possible_move.puzzleState == openListState.puzzleState:
+                    if possible_move.cost >= openListState.cost:
+                        skip_to_next_move = True
+                        break
+                    else:
+                        self.openList[index_counter] = possible_move
+                        skip_to_next_move = True
+                        break
+                index_counter = index_counter + 1
+            if skip_to_next_move:
                 continue
-            # append possible move to open list if it has not already been encountered with a smaller cost
+            # append possible move to open list if it has not already been encountered
             self.openList.append(possible_move)
 
     # display statistics after search is completed
