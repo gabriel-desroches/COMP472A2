@@ -44,7 +44,7 @@ def main(args):
                     depthSearch(puzzle, end_state)
             else:
                 for puzzle in puzzle_list:
-                    a_star = AStar(puzzle, args.a, end_state)
+                    a_star = AStar(puzzle, a, end_state)
                     puzzle_info = a_star.run()
                     if (puzzle_info != "error"):
                         totals += puzzle_info
