@@ -22,10 +22,6 @@ def main(args):
             puzzle_list.append(puzzle)
     # print(*puzzle_list, sep = "\n")
 
-    # TODO -------------------------------------------- 
-    # format solution path to display important info
-    # --------------------------------------------------
-
     # Generate expected solution
     end_list = list()
     i = 1
