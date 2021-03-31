@@ -29,7 +29,7 @@ class DFS:
     # Non recursive depthFirstSearch because otherwise recursion depth limit is exceeded
     def run(self):
         # end_state info
-        print(f'\nStarting AStar search for {self.N_COL}X{self.N_ROW}\n{self.puzzle}\n')
+        print(f'\nStarting DFS search for {self.N_COL}X{self.N_ROW}\n{self.puzzle}\n')
         while self.open_list:
             if time.time() - self.startTime > 60:
                 print("Exceeded 60 seconds. Solution not found!")

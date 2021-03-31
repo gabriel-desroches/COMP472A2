@@ -3,6 +3,7 @@ from IterativeDeepening import *
 from AStar import *
 import argparse
 
+
 def main(args):
     '''
     Main configuration set here
@@ -45,6 +46,7 @@ def main(args):
         for puzzle in puzzle_list:
             a = AStar(puzzle, args.a, end_state)
             a.run()
+
 
 if __name__ == "__main__":
     '''
