@@ -65,6 +65,8 @@ class AStar:
                 return self.post_search_info()
             if time.time() - self.startTime > 60:
                 print("Exceeded 60 seconds. Solution not found!")
+                self.searchFile.write('no solution')
+                self.solutionFile.write('no solution')
                 return None
             self.execute_move()
 

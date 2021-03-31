@@ -37,7 +37,7 @@ def main(args):
     if not os.path.exists('Outputs'):
         os.makedirs('Outputs')
     with open('./Outputs/analysis.txt', 'w',  encoding='utf-8') as f:
-        for a in ['DFS', 'M', 'SPI']:
+        for a in ['DFS', 'IDS', 'M', 'H', 'SPI']:
             totals = np.zeros(5) # total length of the solution and search paths, cost, execution time, and number of no solution.
             if a == 'DFS':
                 for puzzle in puzzle_list:
