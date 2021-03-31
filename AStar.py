@@ -1,5 +1,5 @@
 import time
-
+import os
 
 # determine heuristic to use
 def setup_heuristic(heuristic):
@@ -43,9 +43,11 @@ class AStar:
         self.currentState = self.initialState
         self.endState = end_state
         self.searchPathLength = 0
-        self.searchFile = open("AStar Search Path.txt", 'w')
+        if not os.path.exists('Outputs'):
+            os.makedirs('Outputs')
+        self.searchFile = open("./Outputs/AStar Search Path.txt", 'w')
         self.searchFile.write('Here is the a* search path:\n\n')
-        self.solutionFile = open("AStar Solution Path.txt", 'w')
+        self.solutionFile = open("./Outputs/AStar Solution Path.txt", 'w')
         self.solutionFile.write('Here is the a* solution path:\n')
         self.openList = []
         self.openList.append(self.initialState)
@@ -63,7 +65,7 @@ class AStar:
                 return self.post_search_info()
             if time.time() - self.startTime > 60:
                 print("Exceeded 60 seconds. Solution not found!")
-                return "error"
+                return None
             self.execute_move()
 
     # this method executes a move (pops it from the priority list) and considers further possible moves

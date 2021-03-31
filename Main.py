@@ -34,10 +34,11 @@ def main(args):
     # Compile analysis data for the input puzzles
     if args.a == 'DFS':
         for puzzle in puzzle_list:
-            depthSearch(puzzle, end_state)
+            d = DFS(puzzle, end_state)
+            d.run()
     elif args.a == 'IDS':
         for puzzle in puzzle_list:
-            depthSearch(puzzle, end_state)
+            return
     else:
         for puzzle in puzzle_list:
             a = AStar(puzzle, args.a, end_state)
