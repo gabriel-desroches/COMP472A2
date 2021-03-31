@@ -54,11 +54,8 @@ class AStar:
 
     # called after creating the a* search object to run the search
     def run(self):
-        print(
-            '\nStarting AStar search for ' + str(self.numberOfRows) + 'X' + str(self.numberOfColumns) + ' puzzle using '
-                                                                                                        'heuristic: ' +
-            self.heuristic.name + '\n')
-        print(self.initialState.puzzleState)
+        print(f'\nStarting AStar search for {str(self.numberOfRows)}X{str(self.numberOfColumns)} '
+              f'puzzle using heuristic: {self.heuristic.name}\n{self.initialState.puzzleState}\n')
         # keep searching trough the states until goal state is found or time exceeded
         while True:
             if self.endState == self.currentState.puzzleState:
