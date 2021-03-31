@@ -72,7 +72,7 @@ class DFS:
     def post_search_info(self, node):
         execution_time = (time.time() - self.startTime)
         print("--- %s seconds ---" % execution_time + '\n')
-        ###
+        # Retrace solution path
         solution = [node[0]]
         solution_length = 0
         previousState = node[1]
@@ -86,8 +86,7 @@ class DFS:
 
         for x in reversed(solution):
             self.solutionFile.write(str(x) + '\n')
-        ###
         print(f'Length of search path: {self.searchPathLength}')
         print(f'Length of solution path: {solution_length}')
-        print(f'Cost of the solution: {self.searchPathLength}') # ???
+        print(f'Cost of the solution: {self.searchPathLength}')
         return solution_length, self.searchPathLength, self.searchPathLength, execution_time, 0
