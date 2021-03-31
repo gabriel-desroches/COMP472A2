@@ -1,7 +1,5 @@
 import time
 
-endState = ((1, 2, 3), (4, 5, 6), (7, 8, 9))
-N_SIZE = len(endState)
 searchFile = open("DFS Search Path.txt", 'w')
 solutionFile = open("DFS Solution Path.txt", 'w')
 
@@ -13,11 +11,15 @@ class Node():
 
 
 # Non recursive depthFirstSearch because otherwise recursion depth limit is exceeded
-def depthSearch(state):
+def depthSearch(state, end_state):
     visited = set()  # Closed Set
     rootNode = Node(state)
     stack = [rootNode]  # Open Set
     count = 0
+    # end_state info
+    N_COL = len(end_state)
+    N_ROW = len(end_state[0])
+
     start_time = time.time()
     while (len(stack)) != 0:
         if time.time() - start_time > 60:
@@ -29,7 +31,7 @@ def depthSearch(state):
         # print(f"{count}: stack({len(stack)}), visited({len(visited)})")
         searchFile.write(str(node.state) + '\n')
 
-        if node.state == endState:
+        if node.state == end_state:
             print("Found!")
             print(f"{count}: stack({len(stack)}), visited({len(visited)})")
             print("--- %s seconds ---" % (time.time() - start_time))
@@ -39,7 +41,7 @@ def depthSearch(state):
         visited.add(node.state)  # Add to Closed Set
 
         # Generate children of current puzzle state
-        children = generateChildren(node)
+        children = generateChildren(node, N_COL, N_ROW)
 
         # Reject any children already present in open or closed sets. Optimize
         for child in children:
@@ -57,13 +59,13 @@ def depthSearch(state):
 
 
 # Helper function to generate children
-def generateChildren(node):
+def generateChildren(node, N_COL, N_ROW):
     moves = []
-    for i in range(N_SIZE):
-        for j in range(N_SIZE):
-            if i < N_SIZE - 1:
+    for i in range(N_COL):
+        for j in range(N_ROW):
+            if i < N_COL - 1:
                 moves.append(elem_swap(node, i, j, i + 1, j))  # vertical
-            if j < N_SIZE - 1:
+            if j < N_ROW - 1:
                 moves.append(elem_swap(node, i, j, i, j + 1))  # horizontal
 
     for x in moves:
