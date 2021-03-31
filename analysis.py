@@ -3,6 +3,7 @@ from IterativeDeepening import *
 from AStar import *
 import argparse
 import numpy as np
+import os
 
 def main(args):
     '''
@@ -33,20 +34,33 @@ def main(args):
     # print(*end_state, sep = "\n")
 
     # Compile analysis data for the input puzzles
-    with open('analysis.txt', 'w',  encoding='utf-8') as f:
-        for a in ['DFS', 'IDS', 'M', 'SPI', 'H']:
+    if not os.path.exists('Outputs'):
+        os.makedirs('Outputs')
+    with open('./Outputs/analysis.txt', 'w',  encoding='utf-8') as f:
+        for a in ['DFS', 'IDS', 'M', 'H', 'SPI']:
             totals = np.zeros(5) # total length of the solution and search paths, cost, execution time, and number of no solution.
             if a == 'DFS':
                 for puzzle in puzzle_list:
-                    depthSearch(puzzle, end_state)
+                    d = DFS(puzzle, end_state)
+                    puzzle_info = d.run()
+                    if puzzle_info is not None:
+                        totals += puzzle_info
+                    else: 
+                        totals[4] += 1
             elif a == 'IDS':
                 for puzzle in puzzle_list:
-                    depthSearch(puzzle, end_state)
+                    # i = IDS(puzzle, end_state)
+                    # puzzle_info = i.run()
+                    # if puzzle_info is not None:
+                    #     totals += puzzle_info
+                    # else: 
+                    #     totals[4] += 1
+                    return
             else:
                 for puzzle in puzzle_list:
                     a_star = AStar(puzzle, a, end_state)
                     puzzle_info = a_star.run()
-                    if (puzzle_info != "error"):
+                    if puzzle_info is not None:
                         totals += puzzle_info
                     else: 
                         totals[4] += 1

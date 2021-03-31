@@ -1,5 +1,5 @@
 import time
-
+import os
 
 # determine heuristic to use
 def setup_heuristic(heuristic):
@@ -43,9 +43,11 @@ class AStar:
         self.currentState = self.initialState
         self.endState = end_state
         self.searchPathLength = 0
-        self.searchFile = open("AStar Search Path.txt", 'w')
+        if not os.path.exists('Outputs'):
+            os.makedirs('Outputs')
+        self.searchFile = open("./Outputs/AStar Search Path.txt", 'w')
         self.searchFile.write('Here is the a* search path:\n\n')
-        self.solutionFile = open("AStar Solution Path.txt", 'w')
+        self.solutionFile = open("./Outputs/AStar Solution Path.txt", 'w')
         self.solutionFile.write('Here is the a* solution path:\n')
         self.openList = []
         self.openList.append(self.initialState)
@@ -54,11 +56,8 @@ class AStar:
 
     # called after creating the a* search object to run the search
     def run(self):
-        print(
-            '\nStarting AStar search for ' + str(self.numberOfRows) + 'X' + str(self.numberOfColumns) + ' puzzle using '
-                                                                                                        'heuristic: ' +
-            self.heuristic.name + '\n')
-        print(self.initialState.puzzleState)
+        print(f'\nStarting AStar search for {str(self.numberOfRows)}X{str(self.numberOfColumns)} '
+              f'puzzle using heuristic: {self.heuristic.name}\n{self.initialState.puzzleState}\n')
         # keep searching trough the states until goal state is found or time exceeded
         while True:
             if self.endState == self.currentState.puzzleState:
@@ -66,7 +65,9 @@ class AStar:
                 return self.post_search_info()
             if time.time() - self.startTime > 60:
                 print("Exceeded 60 seconds. Solution not found!")
-                return "error"
+                self.searchFile.write('no solution')
+                self.solutionFile.write('no solution')
+                return None
             self.execute_move()
 
     # this method executes a move (pops it from the priority list) and considers further possible moves

@@ -3,6 +3,7 @@ from IterativeDeepening import *
 from AStar import *
 import argparse
 
+
 def main(args):
     '''
     Main configuration set here
@@ -34,14 +35,18 @@ def main(args):
     # Compile analysis data for the input puzzles
     if args.a == 'DFS':
         for puzzle in puzzle_list:
-            depthSearch(puzzle, end_state)
+            d = DFS(puzzle, end_state)
+            d.run()
     elif args.a == 'IDS':
         for puzzle in puzzle_list:
-            depthSearch(puzzle, end_state)
+            # i = IDS(puzzle, end_state)
+            # i.run()
+            return
     else:
         for puzzle in puzzle_list:
             a = AStar(puzzle, args.a, end_state)
             a.run()
+
 
 if __name__ == "__main__":
     '''
