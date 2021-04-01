@@ -45,10 +45,10 @@ class AStar:
         self.searchPathLength = 0
         if not os.path.exists('Outputs'):
             os.makedirs('Outputs')
-        self.searchFile = open("./Outputs/AStar Search Path.txt", 'w')
-        self.searchFile.write('Here is the a* search path:\n\n')
-        self.solutionFile = open("./Outputs/AStar Solution Path.txt", 'w')
-        self.solutionFile.write('Here is the a* solution path:\n')
+        self.searchFile = open(f"./Outputs/AStar Search Path {heuristic}.txt", 'w')
+        self.searchFile.write(f'Here is the a* search path for {heuristic}:\n\n')
+        self.solutionFile = open(f"./Outputs/AStar Solution Path {heuristic}.txt", 'w')
+        self.solutionFile.write(f'Here is the a* solution path for {heuristic}:\n')
         self.openList = []
         self.openList.append(self.initialState)
         self.closedList = set()

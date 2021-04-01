@@ -119,4 +119,4 @@ class IDS:
         print(f'Length of search path: {self.searchPathLength}')
         print(f'Length of solution path: {solution_length}')
         print(f'Cost of the solution: {self.searchPathLength}')
-        return solution_length, self.searchPathLength, self.searchPathLength, execution_time, 0
+        return solution_length, self.searchPathLength, solution_length, execution_time, 0
