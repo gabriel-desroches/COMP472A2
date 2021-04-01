@@ -2,11 +2,11 @@ https://github.com/gabriel-desroches/COMP472A2
 
 # COMP472 - A2
 
-Completed By:
-Gabriel Desroches
-Felix Morin
-Richard Nguyen
-Vladislav Voznitsa
+Completed By:  
+Gabriel Desroches  
+Felix Morin  
+Richard Nguyen  
+Vladislav Voznitsa  
 
 To generate one puzzle of N by M size
 ```bash
