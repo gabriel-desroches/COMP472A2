@@ -2,13 +2,13 @@ Analysis for algorithm DFS:
 Average & total length of the solution paths: 40063.3, 801266.0
 Average & total length of the search paths: 63148.3, 1262966.0
 Average & total number of no solution: 0.0, 0.0
-Average & total cost: 63148.3, 1262966.0
+Average & total cost: 40063.3, 801266.0
 Average & total execution time: 1.4556179761886596, 29.112359523773193
 Analysis for algorithm IDS:
 Average & total length of the solution paths: 11.2, 224.0
 Average & total length of the search paths: 1905635.75, 38112715.0
 Average & total number of no solution: 0.0, 0.0
-Average & total cost: 1905635.75, 38112715.0
+Average & total cost: 11.2, 224.0
 Average & total execution time: 11.3057182431221, 226.11436486244202
 Analysis for algorithm M:
 Average & total length of the solution paths: 10.9, 218.0
