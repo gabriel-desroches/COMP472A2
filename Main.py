@@ -39,7 +39,7 @@ def main(args):
             d.run()
     elif args.a == 'IDS':
         for puzzle in puzzle_list:
-            i = IDS(puzzle, end_state)
+            i = IDS(puzzle, end_state, True)
             i.run()
             return
     else:

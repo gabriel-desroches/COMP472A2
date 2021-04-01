@@ -1,4 +1,13 @@
+https://github.com/gabriel-desroches/COMP472A2
+
 # COMP472 - A2
+
+Completed By:  
+Gabriel Desroches  
+Felix Morin  
+Richard Nguyen  
+Vladislav Voznitsa  
+
 To generate one puzzle of N by M size
 ```bash
 $ python gen_input.py -o single_puzzle.txt 1 N M
