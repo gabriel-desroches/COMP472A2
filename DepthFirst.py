@@ -10,25 +10,31 @@ def elem_swap(node, i, j, newI, newJ):
     return tuple(tuple(x) for x in newList)
 
 class DFS:
+    '''DFS implementation'''
     def __init__(self, puzzle, end_state):
+        # info about the puzzle configuration
         self.puzzle = puzzle
         self.N_COL  = len(puzzle)
         self.N_ROW  = len(puzzle[0])
         self.end_state = end_state
+        # analytical info
         self.searchPathLength = 0
-        self.open_list = {puzzle: 'root'} # Open
-        self.closed_list = {} # Closed
+        self.startTime = time.time()
+        # search algorithm param 
+        self.open_list = {puzzle: 'root'} # Open dict using key as current state and value as parent state
+        self.closed_list = {} # Closed/visited set
+        # output param
         if not os.path.exists('Outputs'):
             os.makedirs('Outputs')
         self.searchFile = open("./Outputs/DFS Search Path.txt", 'w')
         self.searchFile.write('Here is the DFS search path:\n\n')
         self.solutionFile = open("./Outputs/DFS Solution Path.txt", 'w')
         self.solutionFile.write('Here is the DFS solution path:\n\n')
-        self.startTime = time.time()
 
-    # Non recursive depthFirstSearch because otherwise recursion depth limit is exceeded
     def run(self):
-        # end_state info
+        '''
+        pop top element in open list and insert on top its children until open list is empty or time exceeds
+        '''
         print(f'\nStarting DFS search for {self.N_COL}X{self.N_ROW}\n{self.puzzle}\n')
         while self.open_list:
             if time.time() - self.startTime > 60:

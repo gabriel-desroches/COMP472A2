@@ -130,6 +130,8 @@ class AStar:
 
 
 class State:
+    __slots__ = ('puzzleState', 'parent', 'depth', 'cost')
+
     def __init__(self, puzzle_state, heuristic, state):
         self.puzzleState = puzzle_state
         self.parent = state
