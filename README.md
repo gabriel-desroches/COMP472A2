@@ -1,3 +1,5 @@
+https://github.com/gabriel-desroches/COMP472A2
+
 # COMP472 - A2
 To generate one puzzle of N by M size
 ```bash
