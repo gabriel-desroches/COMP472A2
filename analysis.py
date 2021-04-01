@@ -77,6 +77,7 @@ def main(args):
             j = IDS(puzzle, end_state, False)
             puzzle_info = j.run()
             f.write(f'{puzzle}: {puzzle_info[0]} moves minimal\n')
+            
 if __name__ == "__main__":
     '''
     Parse your command line arguments here for the input file and algorithm
