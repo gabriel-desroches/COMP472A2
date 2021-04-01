@@ -49,13 +49,12 @@ def main(args):
                         totals[4] += 1
             elif a == 'IDS':
                 for puzzle in puzzle_list:
-                    # i = IDS(puzzle, end_state)
-                    # puzzle_info = i.run()
-                    # if puzzle_info is not None:
-                    #     totals += puzzle_info
-                    # else: 
-                    #     totals[4] += 1
-                    return
+                    i = IDS(puzzle, end_state)
+                    puzzle_info = i.run()
+                    if puzzle_info is not None:
+                        totals += puzzle_info
+                    else: 
+                        totals[4] += 1
             else:
                 for puzzle in puzzle_list:
                     a_star = AStar(puzzle, a, end_state)
