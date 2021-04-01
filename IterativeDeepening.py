@@ -19,7 +19,7 @@ class Node:
 
 class IDS:
     '''IDS implementation'''
-    def __init__(self, puzzle, end_state):
+    def __init__(self, puzzle, end_state, time_limit):
         # info about the puzzle configuration
         self.puzzle = puzzle
         self.N_COL  = len(puzzle)
@@ -28,6 +28,7 @@ class IDS:
         # analytical info
         self.searchPathLength = 0
         self.startTime = time.time()
+        self.time_limit = time_limit
         # search algorithm param 
         self.max_depth = 0
         # output param
@@ -44,20 +45,22 @@ class IDS:
         '''
         print(f'\nStarting IDS search for {self.N_COL}X{self.N_ROW}\n{self.puzzle}\n')
         while True:
-            if time.time() - self.startTime > 60:
-                print("Exceeded 60 seconds. Solution not found!")
-                self.searchFile.write('no solution')
-                self.solutionFile.write('no solution')
-                return None
-            # reset search algorithm param 
-            self.open_list = {self.puzzle: Node('root', 0)} # Open dict using key as current state and value as node info
-            self.closed_list = {} # Closed/visited set
-            while self.open_list:   # Search graph until no more to search depending on max_depth
+            if self.time_limit:
                 if time.time() - self.startTime > 60:
                     print("Exceeded 60 seconds. Solution not found!")
                     self.searchFile.write('no solution')
                     self.solutionFile.write('no solution')
                     return None
+            # reset search algorithm param 
+            self.open_list = {self.puzzle: Node('root', 0)} # Open dict using key as current state and value as node info
+            self.closed_list = {} # Closed/visited set
+            while self.open_list:   # Search graph until no more to search depending on max_depth
+                if self.time_limit:
+                    if time.time() - self.startTime > 60:
+                        print("Exceeded 60 seconds. Solution not found!")
+                        self.searchFile.write('no solution')
+                        self.solutionFile.write('no solution')
+                        return None
 
                 # pop top element from open_list as a tuple of (current_state, Node(parent, depth))
                 node = self.open_list.popitem()

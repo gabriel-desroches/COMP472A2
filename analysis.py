@@ -49,7 +49,7 @@ def main(args):
                         totals[4] += 1
             elif a == 'IDS':
                 for puzzle in puzzle_list:
-                    i = IDS(puzzle, end_state)
+                    i = IDS(puzzle, end_state, True)
                     puzzle_info = i.run()
                     if puzzle_info is not None:
                         totals += puzzle_info
@@ -71,8 +71,12 @@ def main(args):
             f.write(f'Average & total number of no solution: {avg[4]}, {totals[4]}\n')
             f.write(f'Average & total cost: {avg[2]}, {totals[2]}\n')
             f.write(f'Average & total execution time: {avg[3]}, {totals[3]}\n')
-            f.write(f'Optimality of the solution path: ??\n')
 
+        f.write(f'\nOptimality of the solution path: \n')
+        for puzzle in puzzle_list:
+            j = IDS(puzzle, end_state, False)
+            puzzle_info = j.run()
+            f.write(f'{puzzle}: {puzzle_info[0]} moves minimal\n')
 if __name__ == "__main__":
     '''
     Parse your command line arguments here for the input file and algorithm
